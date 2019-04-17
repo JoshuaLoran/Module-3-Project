@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Good Start Homepage</title>
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/multilevelmenu.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<link rel="stylesheet" type="text/css" href="css/animations.css" />
+		<script src="js/modernizr.custom.js"></script>
+	</head>
+	<body>
+		<div class="codrops-top clearfix">
+			<a class="codrops-icon" href="https://www.reddit.com/"><span>Reddit</span></a>
+			<span class="right"><a class="codrops-icon" href="https://mail.google.com/"><span>Gmail</span></a></span>
+		</div>
+
+		<div class="pt-triggers">
+			<!-- <button id="iterateEffects" class="pt-touch-button">Show next page transition</button> -->
+			<div id="dl-menu" class="dl-menuwrapper">
+				<button class="dl-trigger">My Daily Options</button>
+				<ul class="dl-menu">
+					<a href="#">Daily options:</a>
+					<ul class="dl-submenu">
+						<li data-animation="58"><a href="#">Front Page</a></li>
+						<li data-animation="59"><a href="#">Daily to do list</a></li>
+					</ul>
+				</ul>
+			</div><!-- /dl-menu-wrapper-->
+		</div><!-- /triggers -->
+
+		<div id="pt-main" class="pt-perspective">
+			<div class="pt-page pt-page-1"><h1><span>Welcome to your</span><strong>Good</strong> Start<span>Homepage</span></h1>
+				<div class="login">
+					<form id="loginForm">
+						<label>Who are you?</label><br>
+					  <input type="text" id="loginInput" placeholder="enter your name">
+					  <input type="submit">
+					</form>
+				</div>
+				<div id="tester" class="selfloc">
+					<form class="mapForm" id="searchMapForm">
+					  <input type="text" id="inputField" placeholder="Search a thing near you!">
+					  <input type="submit">
+					</form>
+					<div class="mapBox">
+						<iframe
+							id="map"
+							width="100%"
+						  height="100%"
+						  frameborder="0" style="border:0"
+						  src="https://www.google.com/maps/embed/v1/search?key=AIzaSyD2Dog-33wnrY4_y8HVxPmtkQtIaRJQs6s&zoom=15&maptype=satellite&q=parks+in+Seattle" allowfullscreen>
+						</iframe>
+					</div>
+
+					<div id="skyBox-1" class="skyBox-1 fill">
+
+					</div>
+					<div id="skyBox-2" class="skyBox-2 fill">
+
+					</div>
+					<div id="skyBox-3" class="skyBox-3 fill">
+
+					</div>
+					<div id="skyBox-4" class="skyBox-4 fill">
+
+					</div>
+					<div id="skyBox-5" class="skyBox-5 fill">
+
+					</div>
+				</div>
+			</div>
+			<div class="pt-page pt-page-2"><h1>Daily To Do's</h1>
+			<div class="todoInputDiv">
+				<form class="todoForm" id="todoForm">
+					<label>Enter a Todo</label><br>
+					<input type="text" id="inputTodo" placeholder="Enter todo"><br>
+					<label>Enter a description</label><br>
+					<textarea rows="4" cols="40" id="textAreaInput" placeholder="Enter description here..."></textarea><br>
+					<input type="submit">
+				</form>
+			</div>
+				<div id="todoList" class="listOfTodos">
+
+				</div>
+			</div>
+		</div>
+
+		<div class="pt-message">
+			<p>Your browser does not support CSS animations.</p>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="js/jquery.dlmenu.js"></script>
+		<script src="js/pagetransitions.js"></script>
+		<script src="weather.js"></script>
+	</body>
+</html>
