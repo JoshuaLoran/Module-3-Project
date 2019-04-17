@@ -1,5 +1,5 @@
 const baseURL = 'https://api.openweathermap.org/data/2.5/forecast?'
-const mapBaseURL = 'https://www.google.com/maps/embed/v1/search?key=AIzaSyD2Dog-33wnrY4_y8HVxPmtkQtIaRJQs6s&zoom=15&maptype=satellite&center='
+const mapBaseURL = 'https://www.google.com/maps/embed/v1/search?key=&zoom=15&maptype=satellite&center='
 let searchInput = "&q=parks"
 const weatherApiKey = '&APPID=eb56c41c4aea318b1f2edc0d3437533b'
 let url = baseURL + weatherApiKey
@@ -35,6 +35,7 @@ todoForm.addEventListener('submit', (ev) => {
       description: todoDescription,
       user_id: userId
     }
+    userTodos.push(newTodo)
     postTodos(newTodo)
     buildTodoList()
   })
@@ -50,7 +51,7 @@ function postTodos(todoThing){
         }
   fetch(todoURL, createConfig)
     .then(res => res.json())
-    .then(json => setTodos(json))
+    .then(json => console.log(json))
 }
 
 //fetch all todos
