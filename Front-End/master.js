@@ -1,5 +1,5 @@
 const baseURL = 'https://api.openweathermap.org/data/2.5/forecast?'
-const mapBaseURL = 'https://www.google.com/maps/embed/v1/search?key=&zoom=15&maptype=satellite&center='
+const mapBaseURL = 'https://www.google.com/maps/embed/v1/search?key=AIzaSyD2Dog-33wnrY4_y8HVxPmtkQtIaRJQs6s&zoom=15&maptype=satellite&center='
 let searchInput = "&q=parks"
 const weatherApiKey = '&APPID=eb56c41c4aea318b1f2edc0d3437533b'
 let url = baseURL + weatherApiKey
@@ -10,7 +10,7 @@ const searchForm = document.getElementById('searchMapForm')
 const nameInput = document.getElementById('loginForm')
 const todoForm = document.getElementById('todoForm')
 let builtMapUrl;
-let userId;
+let userId = 0;
 let userTodos;
 let userName = ''
 
@@ -20,7 +20,14 @@ nameInput.addEventListener('submit', (ev) => {
     clearContainer(listOfTodosdiv)
     userName = document.getElementById("loginInput").value
     nameInput.innerHTML = ''
-    nameInput.innerHTML = '<h2>Welcome<br></h2>' + '<h3>' +userName+ '</h3>'
+    nameInput.innerHTML = '<h2>Welcome<br></h2>' + '<h3>' +userName+ '</h3><br>'
+    let logoutButton = document.createElement('button')
+    logoutButton.textContent = "Log Out"
+    logoutButton.addEventListener('click', () => {
+      console.log("clicked")
+      window.location.reload(false);
+    })
+    nameInput.appendChild(logoutButton)
     getFetch()
   })
 
@@ -35,9 +42,11 @@ todoForm.addEventListener('submit', (ev) => {
       description: todoDescription,
       user_id: userId
     }
-    userTodos.push(newTodo)
-    postTodos(newTodo)
-    buildTodoList()
+    if (userId != 0){
+      userTodos.push(newTodo)
+      postTodos(newTodo)
+      buildTodoList()
+    }
   })
 
 //new todo object
@@ -91,6 +100,7 @@ function getUserTodos(json){
     if(user.name === userName){
       userId = user.id
       userTodos = user.todos
+      console.log(userTodos)
       buildTodoList()
     }
   })

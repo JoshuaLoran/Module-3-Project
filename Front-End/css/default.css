@@ -102,6 +102,11 @@ body {
 	position: relative
 }
 
+.login {
+	position: fixed;
+  z-index: 999;
+}
+
 
 a {
 	color: #ddd;
