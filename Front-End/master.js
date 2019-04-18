@@ -1,34 +1,45 @@
+////////////   Globals   /////////////////
+
+//urls for fetch's
 const baseURL = 'https://api.openweathermap.org/data/2.5/forecast?'
 const mapBaseURL = 'https://www.google.com/maps/embed/v1/search?key=AIzaSyD2Dog-33wnrY4_y8HVxPmtkQtIaRJQs6s&zoom=15&maptype=satellite&center='
 let searchInput = "&q=parks"
-const weatherApiKey = '&APPID=eb56c41c4aea318b1f2edc0d3437533b'
+const weatherApiKey = ''
 let url = baseURL + weatherApiKey
 const URL = 'http://localhost:3000/api/users/';
 const todoURL = 'http://localhost:3000/api/todos/'
+//some variables to pass around
 const listOfTodosdiv = document.getElementById("todoList")
 const searchForm = document.getElementById('searchMapForm')
+const loginDiv = document.getElementById('login')
 const nameInput = document.getElementById('loginForm')
 const todoForm = document.getElementById('todoForm')
+const welcomeLogout = document.createElement('div')
 let builtMapUrl;
 let userId = 0;
 let userTodos;
 let userName = ''
+
+////////   Logic    /////////////
 
 //get the user name
 nameInput.addEventListener('submit', (ev) => {
     ev.preventDefault()
     clearContainer(listOfTodosdiv)
     userName = document.getElementById("loginInput").value
-    nameInput.innerHTML = ''
-    nameInput.innerHTML = '<h2>Welcome<br></h2>' + '<h3>' +userName+ '</h3><br>'
-    let logoutButton = document.createElement('button')
-    logoutButton.textContent = "Log Out"
-    logoutButton.addEventListener('click', () => {
-      console.log("clicked")
-      window.location.reload(false);
+    getFetch(userName)
+    nameInput.style.visibility = 'hidden'
+    welcomeLogout.innerHTML = `<h3>Welcome</h3> <h4>${userName}</h4>`
+    logoutButton = document.createElement('button')
+    logoutButton.textContent = 'Logout'
+    logoutButton.addEventListener('click', () =>{
+      clearContainer(welcomeLogout)
+      clearContainer(listOfTodosdiv)
+      nameInput.style.visibility = 'visible'
+      welcomeLogout.innerHTML = ''
     })
-    nameInput.appendChild(logoutButton)
-    getFetch()
+    welcomeLogout.appendChild(logoutButton)
+    loginDiv.appendChild(welcomeLogout)
   })
 
 //get new todo information
@@ -59,37 +70,33 @@ function postTodos(todoThing){
           body: JSON.stringify(todoThing)
         }
   fetch(todoURL, createConfig)
-    .then(res => res.json())
-    .then(json => console.log(json))
 }
 
-//fetch all todos
-function fetchTodos(){
-  fetch(todoURL)
+//delete a todo
+function deleteTodo(todoId){
+  const deleteConfig = {
+          method: "DELETE",
+          headers: {'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+          body: JSON.stringify({id: todoId})
+        }
+  fetch(todoURL + todoId, deleteConfig)
     .then(res => res.json())
     .then(json => console.log(json))
 }
-//delete a todo
-// function deleteTodo(todoName){
-//   const deleteConfig = {
-//           method: "DELETE",
-//           headers: {'Accept': 'application/json',
-//                     'Content-Type': 'application/json'
-//                   },
-//           body: JSON.stringify({id: 5})
-//         }
-//   fetch(todoURL + '5', deleteConfig)
-//     .then(res => res.json())
-//     .then(json => console.log(json))
-// }
-// fetchTodos()
-// deleteTodo(todoThing)
-// fetchTodos()
 
 //
-//fetch from my rails backend
-function getFetch(){
-  fetch(URL)
+//fetch users
+function getFetch(name){
+  const userPostConfig = {
+          method: "POST",
+          headers: {'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+          body: JSON.stringify({name: name})
+        }
+  fetch(URL, userPostConfig)
     .then(res => res.json())
     .then(json => getUserTodos(json));
 }
@@ -100,7 +107,6 @@ function getUserTodos(json){
     if(user.name === userName){
       userId = user.id
       userTodos = user.todos
-      console.log(userTodos)
       buildTodoList()
     }
   })
@@ -112,23 +118,30 @@ function buildTodoList(){
   userTodos.forEach(todo => {
     let li = document.createElement('li')
     li.textContent = todo.name + ': ' + todo.description
+    let todoDeleteButton = document.createElement('button')
+    todoDeleteButton.textContent = 'x'
+    todoDeleteButton.addEventListener('click', () => {
+      li.remove()
+      deleteTodo(todo.id)
+    })
+    li.appendChild(todoDeleteButton)
     ul.appendChild(li)
     listOfTodosdiv.appendChild(ul)
   })
 }
 
 //update a user
-function updateUser(updateId){
-  const config = {
-        method: "PATCH",
-        headers: {'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-        body: JSON.stringify({worklocation: "1411 4th ave Seattle Wa, 98133", name: "Joshua Loran", email: "joshua.loran@gmail.com"})
-        // body: JSON.stringify(updateObj)
-      }
-  fetch(URL + `${updateId}/`, config)
-}
+// function updateUser(updateId){
+//   const config = {
+//         method: "PATCH",
+//         headers: {'Accept': 'application/json',
+//                   'Content-Type': 'application/json'
+//                 },
+//         body: JSON.stringify({worklocation: "1411 4th ave Seattle Wa, 98133", name: "Joshua Loran", email: "joshua.loran@gmail.com"})
+//         // body: JSON.stringify(updateObj)
+//       }
+//   fetch(URL + `${updateId}/`, config)
+// }
 
 //grab coordinates from HTML5
 function getLocation() {
@@ -158,11 +171,11 @@ function getCoords(position){
 function fetchWeather(builtUrl){
   fetch(builtUrl)
     .then(res => res.json())
-    .then(json => buildWeather(json))
+    .then(json => climateConstructor(json))
 }
 
 //use the weather json to build a display of info
-function buildWeather(json){
+function climateConstructor(json){
   //box 1
   const skyBoxOne = document.getElementById('skyBox-1')
   let imageOne = document.createElement('img')

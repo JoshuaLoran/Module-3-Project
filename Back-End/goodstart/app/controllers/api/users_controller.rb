@@ -14,6 +14,12 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def create
+     @user = User.find_or_create_by(name: params[:name]) #create user
+     @@all = User.all
+     render json: @@all
+  end
+
   private
 
   def user_params

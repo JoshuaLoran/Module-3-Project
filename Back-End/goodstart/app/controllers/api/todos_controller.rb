@@ -24,17 +24,18 @@ class Api::TodosController < ApplicationController
      render json: @@all
    end
   end
-
+# works on this part
   def destroy
-    Todo.find(params[:name]).destroy
-    @todos = Todo.all
-    render json: @todos
+    @todo = Todo.find_by(id: params[:id])
+    Todo.delete(@todo)
+    @@all = Todo.all
+    render json: @@all
   end
 
   private
 
   def todo_params
-    params.permit(:name, :description, :user_id)
+    params.permit(:name, :description, :user_id, :id)
   end
 
   def find_todo
